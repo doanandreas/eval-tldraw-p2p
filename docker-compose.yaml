@@ -1,7 +1,0 @@
-version: '3'
-services:
-  backend:
-    build: .
-    environment:
-      - PEER_ID=B
-      - ELECTRON_ENABLE_LOGGING=true
