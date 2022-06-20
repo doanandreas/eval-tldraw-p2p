@@ -7,9 +7,18 @@ RUN apt-get update && apt-get install \
     -yq --no-install-suggests --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN useradd -d /non-root-user non-root-user
+USER non-root-user
+
 COPY package.json .
 RUN npm install
 RUN npx electron-rebuild
 COPY . .
+
+USER root
+RUN chown root /app/node_modules/electron/dist/chrome-sandbox
+RUN chmod 4755 /app/node_modules/electron/dist/chrome-sandbox
+
+USER non-root-user
 
 CMD [ "npm", "start" ]
